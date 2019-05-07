@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    addEvent(element,'click',getBeerById);
+    function getBeerById(e) {
+        var id=this.id;
+        asyncRequest('GET','beer.uri?id='+id,function (resp) {
+            console.log('Requested Beer:'+resp.responseText);
+        })
+    }
+    function getBeerById(id,callback){
+        asyncRequest('GET','beer.uri?id='+id,function(resp){
+            callback(resp.responseText);
+        })
+    }
+    addEvent(element,'click',getBeerByIdBridge);
+    function getBeerByIdBridge(e){
+        getBeerById(this.id,function(beer){
+            console.log('Request Beer'+beer);
+        })
+    }
+</script>
+</body>
+</html>
