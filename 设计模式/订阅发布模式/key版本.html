@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    let yourMsg={};
+    yourMsg.peopleList=[];
+    yourMsg.listen=function (key,fn) {
+        if(!this.peopleList[key]){
+            this.peopleList[key]=[];
+        }
+        this.peopleList[key].push(fn);
+    }
+    yourMsg.triger=function(){
+        let key=Array.prototype.shift.call(arguments);
+        let fns=this.peopleList[key];
+        if(!fns||fns.length==0){ // 没有订阅，则返回
+            return false
+        }
+        for(var i=0,fn;fn=fns[i++];){
+            fn.apply(this,arguments)
+        }
+    }
+    yourMsg.listen('marrgie',function (name) {
+        console.log(name+'想知道你结婚')
+    })
+    yourMsg.listen('unemployment',function (name) {
+        console.log(name+'想知道你失业');
+    })
+    yourMsg.triger('marrgie','张三')
+    yourMsg.triger('unemployment','李四')
+</script>
+</body>
+</html>

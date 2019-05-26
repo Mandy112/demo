@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    var event={
+        peopleList:[],
+        listen:function (key,fn) {
+            if(!this.peopleList[key]){
+                this.peopleList[key]=[];
+            }
+            this.peopleList[key].push(fn);
+        },
+        triger:function(){
+            let key=Array.prototype.shift.call(arguments);
+            let fns=this.peopleList[key];
+            if(!fns||fns.length==0){ // 没有订阅，则返回
+                return false
+            }
+            for(var i=0,fn;fn=fns[i++];){
+                fn.apply(this,arguments)
+            }
+        },
+        remove:function (key,fn) {
+            var fns = this.clientList[key];
+            if(!fns){
+                return false;
+            }
+            if(!fn){
+                fns && (fns.length=0)
+            }else{
+                for (let index = 0; index < fns.length; index++) {
+                    const _fn = fns[index];
+                    if(_fn === fn){
+                        fns.splice(index,1);
+                    }
+                }
+            }
+        }
+    }
+    var installEvent=function (obj) {
+        for(var i in event){
+            obj[i]=event[i];
+        }
+    }
+    let yourMsg={};
+    installEvent(yourMsg);
+    yourMsg.listen('marrgie',function (name) {
+        console.log(name+'想知道你结婚')
+    })
+    yourMsg.listen('unemployment',function (name) {
+        console.log(name+'想知道你失业');
+    })
+    yourMsg.triger('marrgie','张三')
+    yourMsg.triger('unemployment','李四')
+</script>
+</body>
+</html>
