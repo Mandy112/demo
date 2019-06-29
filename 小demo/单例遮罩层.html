@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="btn">click it</button>
+<script type="text/javascript">
+    var createMask = (function () {
+        var mask;
+        return function () {
+            if (!mask) {
+                mask = document.createElement('div');
+                mask.style.width = '50px';
+                mask.style.height = '50px';
+                mask.style.background = 'rgba(0,0,0,0.4)';
+                mask.style.display = 'block';
+                document.body.appendChild(mask);
+            }
+            return mask;
+        }
+    })();
+    document.getElementById('btn').onclick =function () {
+        console.log('点击');
+        var maskLayer = createMask();
+    }
+</script>
+</body>
+</html>

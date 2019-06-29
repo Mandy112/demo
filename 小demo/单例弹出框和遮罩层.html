@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="btn">click it</button>
+<script type="text/javascript">
+    var singleton = function () {
+        var instance;
+        return function (fn) {
+            return instance||(instance = fn.apply(this, arguments))
+        }
+    };
+    var createMask = function () {
+        var mask = document.createElement('div');
+        mask.style.width = '50px';
+        mask.style.height = '50px';
+        mask.style.background = 'rgba(0,0,0,0.4)';
+        mask.style.display = 'none';
+        document.body.appendChild(mask);
+        mask.onclick = function () {
+            this.style.display = 'none';
+        }
+        return mask;
+    }
+    var createLogin = function () {
+        var login = document.createElement('div');
+        login.style.width = '100px';
+        login.style.height = '100px';
+        login.style.background = 'rgba(0,0,0,0.4)';
+        login.innerHTML = 'login it';
+        login.style.display = 'none';
+        document.body.appendChild(login);
+        return login;
+    }
+    var clickFunction = (function () {
+        var oMask;
+        var oLogin;
+        return function () {
+            if (!oMask && !oLogin) {
+                oMask = singleton()(createMask);
+                oLogin = singleton()(createLogin);
+            }
+            oMask.style.display = 'block';
+            oLogin.style.display = 'block';
+        }
+    })();
+    document.getElementById('btn').onclick = clickFunction;
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>实现三栏水平布局之圣杯布局</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      min-height: 130px;
+    }
+
+    .main {
+      flex: 1;
+      background-color: blue;
+    }
+
+    .left {
+      order: -1;
+      width: 200px;
+      background-color: green;
+    }
+
+    .right {
+      width: 300px;
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" id='container'>
+    <div class="main" id='main'>main</div>
+    <div class="left">left</div>
+    <div class="right">right</div>
+  </div>
+</body>
+<script>
+  // 1、原型链继承
+  function Person() {
+
+  }
+
+  function Son() {}
+  Son.prototype = new Person();
+  var son = new Son();
+  //2、借用构造函数
+  function Person() {
+
+  }
+
+  function Son() {
+    Person.call(this)
+  }
+  var son = new Son();
+  //3、组合继承
+  function Person(){}
+  function Son(){
+    Person.call(this);
+  }
+  Son.prototype=new Person();
+  var son=new Son();
+  //4、原型式继承
+  function createson(obj){
+    function f(){}
+    f.prototype=obj;
+    return new f();
+  }
+  var person={age:1}
+  var son=new createson(person);
+
+  var son1=Object.create(person,{name:{value:'linda'}})
+  console.log('原型式继承',son1)
+  //5、寄生式继承
+  function linkPrototype(obj){
+    function f(){}
+    f.prototype=obj;
+    return new f();
+  }
+  var Person={}
+  function CreateSon(){
+    var son=linkPrototype(Person);
+    son.fun1=function(){}
+    return son
+  }
+  var son=new CreateSon();
+  //6、寄生组合式继承
+  function Person(){}
+  function Son(){
+    Person.call(this)
+  }
+  function LinkPro(obj){
+    function f(){}
+    f.prototype=obj;
+    return new f();
+  }
+  function instance(son,person){
+    var proto=LinkPro(person.prototype);
+    proto.constructor=son;
+    son.prototype=proto;
+  }
+  instance(Son,Person);
+  var son=new Son();
+
+</script>
+
+</html>
