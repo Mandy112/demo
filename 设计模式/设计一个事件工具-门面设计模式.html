@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--code here-->
+  <title>demo</title>
+</head>
+
+<body>
+  <div id="J_container">
+
+  </div>
+
+  <script>
+   DED.util.Event={
+     getEvent:function(e){
+       return e||window.event;
+     },
+     getTarget:function(e){
+       return e.target||e.srcElement;
+     },
+     stopPropagation:function(e){
+       if(e.stopPropagation){
+         e.stopPropagation()
+       }else{
+         e.cancelBubble=true;
+       }
+     },
+     preventDefault:function(e){
+       if(e.preventDefault){
+         e.preventDefault();
+
+       }else{
+         e.returnValue=false;
+       }
+     },
+     stopEvent:function(e){
+       this.stopPropagation(e);
+       this.preventDefault(e);
+     }
+   }
+  </script>
+</body>
+
+</html>

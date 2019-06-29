@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--code here-->
+  <title>demo</title>
+
+</head>
+
+<body>
+  <div id="J_container">
+
+  </div>
+
+  <script>
+    var Car = function (make, model, year, owner, tag, renewDate) {
+      this.make = make;
+      this.model = mode
+      this.year = year;
+      this.owner = owner;
+      this.tag = tag;
+      this.renewDate = renewDate;
+    }
+    car.prototype = {
+      getMake: function () {
+        return this.make;
+      },
+      getModel: function () {
+        return this.model;
+      },
+      getYear: function () {
+        return this.year;
+      },
+      transferOwnership: function (newOwner, newTag, newRenewDate) {
+        this.owner = newOwner;
+        this.tag = newTag;
+        this.renewDate = newRenewDate;
+      },
+      isRegistrationCurrent: function () {
+        var today = new Date();
+        return today.getTime() < Date.parse(this.renewDate);
+      }
+    }
+  </script>
+</body>
+
+</html>

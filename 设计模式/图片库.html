@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--code here-->
+  <title>demo</title>
+</head>
+
+<body>
+  <div id="J_container">
+
+  </div>
+
+  <script>
+    // var Composite = new interface('Composite', ['add', 'remove', 'getChild'])
+    // var GalleryItem = new interface('GalleryItem', ['hide', 'show']);
+
+    var DynamicGallery = function (id) {
+      this.children = [];
+      this.element = document.createElement('div');
+      this.element.id = id;
+    }
+    DynamicGallery.prototype = {
+      add: function (child) {
+        // Interface.ensureImplements(child, Composite, GalleryItem);
+        this.children.push(child);
+        this.element.appendChild(child.getElement());
+      },
+      remove: function (child) {
+        for (var node, i = 0; nod = this.getChild(i); i++) {
+          if (node == child) {
+            this.children.splice(i, 1);
+            break;
+          }
+        }
+        this.element.removeChild(child.getElement());
+      },
+      // i：number类型，第几个子元素
+      getChild: function (i) {
+        return this.children[i];
+      },
+      //Implement the GalleryItem interface
+      hide: function () {
+        for (var node, i = 0; node = this.getChild(i); i++) {
+          node.hide();
+        }
+        this.element.style.display = 'none';
+      },
+      show: function () {
+        this.element.style.display = 'block';
+        // 对组合对象进行操作，会传递到所有子元素都进行操作
+        for (var node, i = 0; node = this.getChild(i); i++) {
+          node.show();
+        }
+      },
+      //helper methods
+      getElement: function () {
+        return this.element;
+      }
+    }
+    var GalleryImage = function (src) {
+      // implements Composite,GalleryItem
+      this.element = document.createElement('input');
+      this.element.value = src;
+    }
+    GalleryImage.prototype = {
+      //implement the Composite interface
+      // this is a leaf node,so we don't implement these methods,we just define them
+      add: function () {},
+      remove: function () {},
+      getChild: function () {},
+      // implement the GalleryItem interface 
+      hide: function () {
+        this.element.style.display = 'none';
+      },
+      show: function () {
+        this.element.style.display = '';
+      },
+      //helper methods
+      getElement: function () {
+        return this.element;
+      }
+    }
+
+    //  使用
+    var topGallery=new DynamicGallery('top-gallery')
+    topGallery.add(new GalleryImage('/img/image-1.jpg'));
+    topGallery.add(new GalleryImage('/img/image-2.jpg'));
+    topGallery.add(new GalleryImage('/img/image-3.jpg'));
+
+    var vacationPhotos=new DynamicGallery('vacation-photos');
+
+    for(var i=0;i<30;i++){
+      vacationPhotos.add(new GalleryImage('/img/vac/image-'+i+'.jpg'));
+    }
+    topGallery.add(vacationPhotos)
+    topGallery.show();
+    // vacationPhotos.hide()
+    document.body.appendChild(topGallery.getElement())
+  </script>
+</body>
+
+</html>

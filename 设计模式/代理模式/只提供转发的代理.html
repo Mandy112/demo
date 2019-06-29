@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--code here-->
+  <title>demo</title>
+
+</head>
+
+<body>
+  <div id="J_container">
+
+  </div>
+
+  <script>
+    var Publication = new Interface('Publication', ['getIsbn', 'setIsbn', 'getTitle', 'setTitle', 'getAuthor',
+      'setAuthor', 'display'
+    ])
+    var Book = function (isBn, title, author) {} //implements Publication
+    var Library = new Interface('Library', ['findBooks', 'checkoutBook', 'returnBook'])
+    var PublicLibrary = function (bboks) {
+      this.catalog = {};
+      for (var i = 0, len = books.length; i < len; i++) {
+        this.cacalog[books[i].getIsbn()] = {
+          book: books[i],
+          available: true
+        }
+      }
+    }
+    PublicLibrary.prototype = {
+      // 找书
+      findBooks: function (searchString) {
+        var results = [];
+        for (var isbn in this.catalog) {
+          if (!this.cacalog.hasOwnProperty(isbn)) continue;
+          if (searchString.match(this.catalog[isbn].getTitle()) || searchString.match(this.catalog[isbn]
+              .getAuthor())) {
+            results.push(this.catalog[isbn]);
+          }
+        }
+      }
+    }
+    //实现这个类的代理
+    var PublicLibraryProxy=function(catalog){
+      this.library=new PublicLibrary(catalog);
+    }
+    PublicLibraryProxy.prototype={
+      findBooks:function(searchString){
+        return this.library.findBooks(searchString);
+      }
+    }
+  </script>
+</body>
+
+</html>

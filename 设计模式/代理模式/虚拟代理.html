@@ -1,0 +1,29 @@
+<!-- 虚拟代理是最有用的类型之一。虚拟代理用于控制对那种创建开销很大的本体的访问。它会把本体的实例推迟到有方法被调用的时候 -->
+<!-- 有时还会提供关于实例化状态的反馈。它还可以在本体被加载之前扮演其替身的角色。 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>demo</title>
+</head>
+
+<body>
+  <div id="J_container">
+
+  </div>
+
+  <script>
+   //假设PublicLibrary实例化很慢，不能在网页加载的时候立即完成
+   //我们可以为其创建一个虚拟代理，让它把PublicLibrary的实例化推迟到必要的时候
+
+  //  PublicLibraryVirtualProxy class
+   var PublicLibraryVirtualProxy=function(catalog){
+     this.library=null;
+     this.catalog=catalog; //Store the argument to the constructor
+   }
+   
+  </script>
+</body>
+
+</html>
