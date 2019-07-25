@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>轮播图</title>
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border: 0;
+  }
+
+  .all {
+    position: relative;
+    width: 500px;
+    height: 200px;
+    border: 1px solid black;
+    padding: 7px;
+    margin: 100px auto;
+  }
+
+  .silder {
+    overflow: hidden;
+    width: 500px;
+    height: 200px;
+    position: relative;
+  }
+
+  .silder ul {
+    position: absolute;
+    top: 0;
+    width: 3000px;
+    height: 200px;
+  }
+
+  .silder li {
+    height: 200px;
+    float: left;
+  }
+
+  .silder ol {
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+    height: 20px;
+  }
+
+  .silder ol li {
+    margin: 0 5px;
+    background: #fff;
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+  }
+
+  .current {
+    background: pink !important;
+  }
+
+  .arr span {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    background: #000;
+    cursor: pointer;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-family: '黑体';
+    font-size: 30px;
+    color: #fff;
+    opacity: 0.3;
+    border: 1px solid #fff;
+    display: none;
+  }
+
+  .left {
+    left: 5px;
+  }
+
+  .right {
+    right: 5px;
+  }
+</style>
+<body>
+<div class="all">
+  <div class="silder" id="silder">
+    <ul>
+      <li><img src="./img/1.jpg" width="500" height="200"/></li>
+      <li><img src="./img/2.jpg" width="500" height="200"/></li>
+      <li><img src="./img/3.jpg" width="500" height="200"/></li>
+    </ul>
+    <ol></ol>
+    <div class="arr">
+      <span class="left"><</span>
+      <span class="right">></span>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+  var silder = document.getElementById('silder')
+  var ul = silder.children[0]
+  var imgWidth = silder.offsetWidth
+  var ol = silder.children[1]
+  var silder_btn = silder.children[2]
+
+  var globalTimer, key = 0;
+
+  window.onload = function () {
+
+    for (var i = 0, len = ul.children.length; i < len; i++) {
+      var newLi = document.createElement('li')
+      const index = i
+      // 给数字下标设置鼠标移入事件，若
+      newLi.onmouseover = function () {
+        // 取消轮播定时器，
+        clearInterval(globalTimer)
+        setLiCurrent(index)
+        key = index;
+        animate(-key * imgWidth)
+
+      };
+      newLi.innerHTML = i + 1;
+      ol.appendChild(newLi)
+    }
+    // 初始化选中的下标
+    setLiCurrent(0)
+    // 对滑动按钮进行点击事件注册
+    silder_btn.children[0].onclick = function () {
+      console.log(key)
+      key = key - 1 >= 0 ? key - 1 : 0
+      animate(-key * imgWidth)
+      setLiCurrent(key)
+    }
+    silder_btn.children[1].onclick = function () {
+      console.log(key)
+      key = key + 1 >= ol.children.length-1?ol.children.length-1: key + 1
+      animate(-key * imgWidth)
+      setLiCurrent(key)
+    }
+    // 添加第一张图到最后
+    ul.appendChild(ul.children[0].cloneNode(true))
+    // 播放轮播图
+    globalTimer = setInterval(autoPlay, 1000)
+    silder.onmouseover = function () {
+      clearInterval(globalTimer)
+      setSilderBtn('block')
+    }
+    silder.onmouseout = function () {
+      globalTimer = setInterval(autoPlay, 1000)
+      setSilderBtn('none')
+    }
+  }
+
+  function setLiCurrent(index) {
+    for (var i = 0, len = ol.children.length; i < len; i++) {
+      ol.children[i].className = ''
+    }
+    ol.children[index].className = 'current'
+  }
+
+  var ulTimer
+
+  function animate(goal) {
+    clearInterval(ulTimer)
+    var distance = goal - ul.offsetLeft;
+    const speed = distance > 0 ? 10 : -10
+    ulTimer = setInterval(function () {
+      if (Math.abs(goal - ul.offsetLeft) >= Math.abs(speed)) {
+        ul.style.left = ul.offsetLeft + speed + 'px'
+      } else {
+        ul.style.left = goal
+      }
+    }, 10)
+  }
+
+  function autoPlay() {
+    key++
+    if (key > ul.children.length - 1) {
+      ul.style.left = 0
+      key = 1;
+    }
+    animate(-key * imgWidth)
+    setLiCurrent(key > ol.children.length - 1 ? 0 : key)
+  }
+
+  function setSilderBtn(option) {
+    for (var i = 0, len = silder_btn.children.length; i < len; i++) {
+      silder_btn.children[i].style.display = option
+    }
+  }
+</script>
+</html>
