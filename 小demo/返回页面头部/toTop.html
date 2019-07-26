@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="toTop" content="true">
+  <meta charset="UTF-8">
+  <title>回到顶部</title>
+  <style>
+    html {
+      height: 3000px;
+    }
+  </style>
+</head>
+<body>
+<div>
+  向下滚动查看效果
+</div>
+</body>
+<script>
+  window.onload = function () {
+    console.log(document.getElementsByName('toTop')[0].content)
+    if (document.getElementsByName('toTop')[0].content) {
+      var div = document.createElement('div'), img = document.createElement('img')
+      div.style = "width: 50px; height: 50px; bottom: 10px; right: 15px; position: fixed; cursor: pointer; z-index: 999999; display: block;"
+      img.src='1.png'
+      div.appendChild(img)
+      document.getElementsByTagName('body')[0].appendChild(div)
+      if(document.documentElement.scrollTop===0){
+        div.style.display='none'
+      }
+      window.onscroll=function(event){
+        if(document.documentElement.scrollTop===0){
+          div.style.display='none'
+        }else{
+          div.style.display='block'
+        }
+      }
+      div.onclick=function () {
+        var timer=setInterval(function () {
+          var speed=-30;
+          if(Math.abs(document.documentElement.scrollTop)<Math.abs(speed)){
+            clearInterval(timer);
+            document.documentElement.scrollTop=0
+          }else{
+            document.documentElement.scrollTop=document.documentElement.scrollTop+speed
+          }
+        })
+      }
+    }
+  }
+</script>
+
+</html>
