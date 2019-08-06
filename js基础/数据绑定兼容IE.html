@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div>
+  <input id="in" type="text" value=""/>
+  <div id="out">{{hello}}</div>
+</div>
+</body>
+<script>
+  var isIE = !!window.attachEvent;
+  var input = document.getElementById('in'),
+    out = document.getElementById('out'),
+    obj = {}
+  console.log(isIE);
+  function addEvent(element,type,handler){
+    if(element.attachEvent){
+      element.attachEvent('on'+type,handler)
+    }else if(element.addEventListener){
+      element.addEventListener(type,handler)
+    }
+  }
+  if (!isIE) {
+    Object.defineProperty(obj, 'hello', {
+      set: function (val) {
+        input.value = val;
+        out.innerText = val;
+      }
+    })
+    input.onkeyup = function (e) {
+      obj.hello = e.target.value
+    }
+    obj.hello = ''
+  } else {
+    function MyObject(argus) {
+      this.value=''
+      this.set = argus.set || function (val) {
+        this.value = val
+      }
+      this.get = argus.get || function () {
+        return this.value
+      }
+    }
+
+    var hello = new MyObject({
+      set: function (val) {
+        input.value = val;
+        out.innerText = val;
+      }
+    })
+    obj.hello=hello
+    addEvent(input,'keyup',function (e) {
+      obj.hello.set(input.value)
+    })
+  }
+
+</script>
+</html>
